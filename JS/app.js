@@ -77,6 +77,18 @@ function sleep(ms) {
     return new Promise(resolve => setTimeout(resolve, ms));
 }
   
+const resetActiveState = function(items, activeItem) {
+    for (let i = 0; i < items.length; i++) {
+        const element = items[i];
+        if (element === activeItem) {
+            continue;
+        }
+        else {
+            document.getElementById(`${element.id}-link`).classList.remove("active-link");
+            document.getElementById(`${element.id}-link`).querySelector("div").style.display = "none";
+        }
+    }
+}
 
 const checkActiveSection = function() {
     const navSections = document.getElementsByClassName("nav-section");
@@ -84,13 +96,11 @@ const checkActiveSection = function() {
         const section = navSections[i];
         let corespondingLink = document.getElementById(`${section.id}-link`);
         sectionRect = section.getBoundingClientRect();
-        if ((sectionRect.top+sectionRect.bottom)/2 > 0 && (sectionRect.top+sectionRect.bottom)/2 < window.innerHeight) {
+        if (((sectionRect.top+sectionRect.bottom)/2 > 0 && (sectionRect.top+sectionRect.bottom)/2 < screen.height) || (sectionRect.top < 0 && sectionRect.bottom > screen.height)) {
             corespondingLink.classList.add("active-link");
             corespondingLink.querySelector("div").style.display = "block";
-        }
-        else {
-            corespondingLink.classList.remove("active-link");
-            corespondingLink.querySelector("div").style.display = "none";
+            resetActiveState(navSections, section);
+            break;
         }
     }
 }

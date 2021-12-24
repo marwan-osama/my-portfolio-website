@@ -272,4 +272,5 @@ html, body {
     font-size: calc(16px + 20%);
     font-weight: 500;
     height: 2em;
+    margin: 12px 0;
 }
